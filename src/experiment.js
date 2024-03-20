@@ -71,11 +71,12 @@ export async function run({
         stimulus: "<p>Welcome to video!<p/>",
     });
 
-    const init_camera = {
-        type: InitializeCameraPlugin,
-        mime_type: 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
-    };
-    timeline.push(init_camera)
+    // init camera
+    timeline.push({
+        type: InitializeCameraPlugin
+    })
+
+    // this frame actually records
     timeline.push({
         type: HtmlButtonResponsePlugin,
         stimulus: "test",
@@ -83,9 +84,6 @@ export async function run({
         extensions: [{
             type: RecordVideoExtension
         }],
-        // on_finish: function() {
-        //     console.log(jsPsych.data.getLastTrialData())
-        // }
         on_finish: function() {
             let video_data = jsPsych.data.getLastTrialData().trials[0].record_video_data;
             saveData("test", video_data)
